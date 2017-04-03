@@ -2,7 +2,7 @@
 import flask
 from flask.ext.cors import CORS
 from pyvep.config import config
-from pyvep.vep import vep
+from pyvep.vep import run
 
 app = flask.Flask(__name__)
 CORS(app)
