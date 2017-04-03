@@ -1,8 +1,8 @@
 
 import flask
-from flask.ext.cors import CORS
+from flask_cors import CORS
 from pyvep.config import config
-from pyvep.vep import run
+from pyvep.vep import download
 
 app = flask.Flask(__name__)
 CORS(app)
@@ -12,14 +12,13 @@ base_url = config('base_url')
 
 @app.route(init_url, methods=['GET'])
 def download_ref():
-    return ""
+    download()
+    return 'Downloading reference'
 
 
 @app.route(base_url, methods=['POST'])
 def api():
-    print(type(flask.request.get_json(force=True)))
-    genelist = flask.request.get_json(force=True)
-    return flask.jsonify()
+    return None
 
 if __name__ == '__main__':
     app.run()

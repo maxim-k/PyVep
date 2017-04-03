@@ -1,6 +1,6 @@
 FROM willmclaren/ensembl-vep:release_88.1
 
-#Installations for Flask
+#Install denepdencies for Flask
 USER root
 
 RUN apt-get update
@@ -10,7 +10,7 @@ RUN apt-get -y install python3
 RUN apt-get -y install python3-dev
 RUN apt-get -y install python3-setuptools
 RUN apt-get -y install apache2
-RUN apt-get -y install apache2-prefork-dev
+RUN apt-get -y install apache2-dev
 
 
 RUN easy_install3 pip
@@ -22,6 +22,7 @@ ADD . /PyVEP
 CMD /PyVEP/boot.sh
 
 #Switch back to VEP-user
-USER vep
+USER root
 WORKDIR $HOME
 RUN mkdir .vep
+RUN chmod -R 777 .vep
