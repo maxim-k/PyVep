@@ -25,6 +25,3 @@ CMD /PyVEP/boot.sh
 USER root
 WORKDIR $HOME
 RUN git pull
-#RUN perl INSTALL.pl -a ac -s homo_sapiens -y GRCh38 -l
-#RUN mkdir .vep
-#RUN chmod -R 777 .vep
