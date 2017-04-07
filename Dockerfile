@@ -1,4 +1,4 @@
-FROM willmclaren/ensembl-vep:release_88.1
+FROM willmclaren/ensembl-vep:release_88.3
 
 #Install denepdencies for Flask
 USER root
@@ -21,7 +21,7 @@ EXPOSE 80
 ADD . /PyVEP
 CMD /PyVEP/boot.sh
 
-#Switch back to VEP-user
-USER root
-WORKDIR $HOME
+WORKDIR $HOME/src/ensembl-vep
 RUN git pull
+#RUN sudo echo 'r    ALL = NOPASSWD: ALL' >> /etc/sudoers
+#RUN perl INSTALL.pl -a c -s homo_sapiens -y GRCh38 -l --NO_TEST

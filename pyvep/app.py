@@ -12,7 +12,7 @@ base_url = config('base_url')
 
 @app.route(init_url, methods=['GET'])
 def download_ref():
-    download('homo_sapiens', 'GRCh38')
+    # download('homo_sapiens', 'GRCh38')
     return 'Downloading reference'
 
 

@@ -5,7 +5,7 @@ import configparser
 
 def config(key):
     config = configparser.ConfigParser()
-    config.read('pyvep/config.ini')
+    config.read('config.ini')
     return config['PyVEP'][key]
 
 
