@@ -3,7 +3,7 @@ __author__ = 'maximkuleshov'
 from json import loads
 from subprocess import Popen, PIPE
 
-from config import config
+from pyvep.config import config
 
 vep_homedir = config('vep_homedir')
 vep_refdir = config('vep_refdir')

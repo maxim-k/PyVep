@@ -1,4 +1,4 @@
-FROM willmclaren/ensembl-vep:release_88.3
+FROM willmclaren/ensembl-vep:release_88.5
 
 #Install denepdencies for Flask
 USER root
@@ -15,13 +15,12 @@ RUN apt-get -y install apache2-dev
 
 RUN easy_install3 pip
 RUN sudo -H pip3 install mod_wsgi
-RUN sudo -H pip3 install flask flask-cors requests
+RUN sudo -H pip3 install flask flask-cors requests werkzeug
 EXPOSE 80
 
 ADD . /PyVEP
 CMD /PyVEP/boot.sh
 
 WORKDIR $HOME/src/ensembl-vep
-RUN git pull
-#RUN sudo echo 'r    ALL = NOPASSWD: ALL' >> /etc/sudoers
-RUN perl INSTALL.pl -a c -s homo_sapiens -y GRCh38 -l --NO_TEST
+#RUN git pull
+#RUN perl INSTALL.pl -a c -s homo_sapiens -y GRCh38 -l --NO_TEST
