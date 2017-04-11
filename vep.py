@@ -1,8 +1,9 @@
 __author__ = 'maximkuleshov'
 
-from subprocess import Popen, PIPE, STDOUT
-from pyvep.config import config
 from json import loads
+from subprocess import Popen, PIPE
+
+from config import config
 
 vep_homedir = config('vep_homedir')
 vep_refdir = config('vep_refdir')
@@ -20,11 +21,10 @@ def snv_to_json():
 
 
 def run(species, ref, file):
-    bash_command = 'vep --gencode_basic --species {} -i {} --no_stats --json --symbol --cache --input_file test.vcf'.format(species, ref)
+    bash_command = 'vep --gencode_basic --species {} -i {} --no_stats --json --symbol --cache --input_file {}'.format(species, ref, file)
     process = Popen(bash_command.split(), stdout=PIPE, cwd=vep_homedir)
     output, error = process.communicate()
     print(str(output, 'utf-8'))
-
     return None
 
 
