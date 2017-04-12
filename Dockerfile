@@ -14,14 +14,14 @@ RUN apt-get -y install python3-pip
 RUN apt-get -y install nginx uwsgi-core
 
 #RUN sudo -H pip3 install mod_wsgi
-RUN pip3 install -Iv Flask uwsgi
-RUN sudo -H pip3 install -Iv flask flask-cors requests werkzeug uwsgi
+RUN sudo -H pip3 install -Iv Flask flask-cors requests uwsgi
 
 ADD . /PyVEP
+RUN chmod -R 777 /PyVEP/
+RUN chmod -R 777 $HOME
 CMD /PyVEP/boot.sh
 EXPOSE 80
 
 WORKDIR $HOME/src/ensembl-vep
 RUN git pull
-#RUN sudo echo 'r     ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-#RUN perl INSTALL.pl -a c -s homo_sapiens -y GRCh38 -l --NO_TEST
+RUN perl INSTALL.pl -a c -s homo_sapiens -y GRCh38 -l --NO_TEST
