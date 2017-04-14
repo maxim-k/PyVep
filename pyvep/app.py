@@ -8,13 +8,15 @@ from werkzeug.utils import secure_filename
 from pyvep.config import config
 from pyvep.vep import run, vep_homedir
 
+
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = os.path.dirname(os.path.abspath(__file__)) + '/uploads/'
+app.config['UPLOAD_FOLDER'] = config('pyvep_uploads')
 app.config['ALLOWED_EXTENSIONS'] = {'vcf', 'txt'}
 
 CORS(app)
 init_url = config('init_url')
 api_url = config('api_url')
+pyvep_results = config('pyvep_results')
 
 
 def allowed_file(filename):
@@ -43,9 +45,10 @@ def uploaded_file(filename):
 @app.route(init_url, methods=['GET'])
 def run_vep():
     files_path = os.path.join(app.config['UPLOAD_FOLDER'], '*')
+    # TODO: return a decent file, not the last one
     file = os.path.abspath(sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True)[0])
-    run('homo_sapiens', 'GRCh38', file)
-    return send_from_directory(vep_homedir, '{}.txt'.format(file))
+    res_file = os.path.basename(run('homo_sapiens', 'GRCh38', file))
+    return send_from_directory(pyvep_results, '{}.txt'.format(res_file))
 
 
 @app.route(api_url, methods=['POST'])

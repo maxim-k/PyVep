@@ -17,11 +17,12 @@ RUN apt-get -y install nginx uwsgi-core
 RUN sudo -H pip3 install -Iv Flask flask-cors requests uwsgi
 
 ADD . /PyVEP
-RUN chmod -R 777 /PyVEP/
-RUN chmod -R 777 $HOME
+RUN chmod -R 777 /PyVEP/pyvep/uploads/
+RUN chmod -R 777 /PyVEP/pyvep/results/
+
 CMD /PyVEP/boot.sh
 EXPOSE 80
 
 WORKDIR $HOME/src/ensembl-vep
-RUN git pull
-RUN perl INSTALL.pl -a c -s homo_sapiens -y GRCh38 -l --NO_TEST
+#RUN git pull
+#RUN perl INSTALL.pl -a c -s homo_sapiens -y GRCh38 -l --NO_TEST
