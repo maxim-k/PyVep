@@ -30,7 +30,9 @@ def run(species, ref, file):
 
     res_file = pyvep_results + os.path.basename(file)
 
-    bash_command = 'vep --gencode_basic --species {} -i {} --no_stats' \
+    speed_up = '--cache --offline --fork 4 --no_stats'
+
+    bash_command = 'vep --gencode_basic --species {} -i {} ' \
                    ' --json --symbol --database --input_file {}' \
                    ' --output_file {}.txt'.format(species, ref, file, res_file)
 
