@@ -24,14 +24,22 @@ def snv_to_json():
 
 
 def run(species, ref, file):
-    # bash_command = 'vep --gencode_basic --species {} -i {} --no_stats' \
-    #                ' --json --symbol --cache --offline --input_file {}' \
-    #                ' --output_file {}.txt'.format(species, ref, file, file)
-
+    # Local cache version
     res_file = pyvep_results + os.path.basename(file)
+    bash_command = 'vep --gencode_basic --species {} -i {} ' \
+                   ' --json --symbol --cache --offline --fork 4' \
+                   ' --no_stats --input_file {}' \
+                   ' --output_file {}.txt'.format(species, ref, file, res_file)
 
-    speed_up = '--cache --offline --fork 4 --no_stats'
+    process = Popen(bash_command.split(), stdout=PIPE, cwd=vep_homedir)
+    output, error = process.communicate()
+    print(str(output, 'utf-8'))
+    return res_file
 
+
+def run_dev(species, ref, file):
+    # Ensembl db version
+    res_file = pyvep_results + os.path.basename(file)
     bash_command = 'vep --gencode_basic --species {} -i {} ' \
                    ' --json --symbol --database --input_file {}' \
                    ' --output_file {}.txt'.format(species, ref, file, res_file)

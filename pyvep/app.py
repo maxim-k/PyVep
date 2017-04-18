@@ -6,7 +6,7 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
 from pyvep.config import config
-from pyvep.vep import run, vep_homedir
+from pyvep.vep import run, run_dev
 
 
 app = Flask(__name__)
@@ -34,7 +34,7 @@ def upload():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return redirect(url_for('uploaded_file', filename=filename))
+        return render_template('selector.html')
 
 
 @app.route('/uploads/<filename>')
@@ -48,6 +48,15 @@ def run_vep():
     # TODO: return a decent file, not the last one
     file = os.path.abspath(sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True)[0])
     res_file = os.path.basename(run('homo_sapiens', 'GRCh38', file))
+    return send_from_directory(pyvep_results, '{}.txt'.format(res_file))
+
+
+@app.route('{}/dev'.format(init_url), methods=['GET'])
+def run_vep_dev():
+    files_path = os.path.join(app.config['UPLOAD_FOLDER'], '*')
+    # TODO: return a decent file, not the last one
+    file = os.path.abspath(sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True)[0])
+    res_file = os.path.basename(run_dev('homo_sapiens', 'GRCh38', file))
     return send_from_directory(pyvep_results, '{}.txt'.format(res_file))
 
 

@@ -7,14 +7,14 @@
   <body>
     <div class="container">
       <div class="header">
-        <h3 class="text-muted">Upload a vcf-file</h3>
+        <h3 class="text-muted">Select fast and local (production) of slow and global (development) version</h3>
       </div>
       <hr/>
       <div>
 
-      <form action="upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file"><br /><br />
-        <input type="submit" value="Upload">
+      <form method="get" enctype="multipart/form-data">
+          <button type="submit" formaction="/pyvep">Prod</button>
+          <button type="submit" formaction="/pyvep/dev">Dev</button>
       </form>
       </div>
     </div>
