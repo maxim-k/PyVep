@@ -27,8 +27,9 @@ def run(species, ref, file):
     # Local cache version
     res_file = pyvep_results + os.path.basename(file)
     bash_command = 'vep --gencode_basic --species {} -i {} ' \
-                   ' --json --symbol --cache --offline --fork 4' \
-                   ' --no_stats --input_file {}' \
+                   ' --gencode_basic --coding_only --pick --filter "SYMBOL"' \
+                   ' --json --symbol --canonical --cache --offline' \
+                   ' --fork 4 --no_stats --input_file {}' \
                    ' --output_file {}.txt'.format(species, ref, file, res_file)
 
     process = Popen(bash_command.split(), stdout=PIPE, cwd=vep_homedir)
@@ -41,7 +42,8 @@ def run_dev(species, ref, file):
     # Ensembl db version
     res_file = pyvep_results + os.path.basename(file)
     bash_command = 'vep --gencode_basic --species {} -i {} ' \
-                   ' --json --symbol --database --input_file {}' \
+                   ' --gencode_basic --coding_only --pick --filter "SYMBOL"' \
+                   ' --json --symbol --canonical --database --input_file {}' \
                    ' --output_file {}.txt'.format(species, ref, file, res_file)
 
     process = Popen(bash_command.split(), stdout=PIPE, cwd=vep_homedir)

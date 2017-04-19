@@ -20,16 +20,14 @@ RUN chmod -R 777 /PyVEP/pyvep/results/
 CMD /PyVEP/boot.sh
 EXPOSE 80
 
-#WORKDIR $HOME/src/
-#RUN git clone https://github.com/Ensembl/ensembl-xs.git
-#WORKDIR $HOME/src/ensemlb-xs
-#RUN chmod -R 777 $HOME/src/ensemlb-xs
-#RUN sudo perl Makefile.PL
-#RUN sudo make
-#RUN sudo make test
-#RUN sudo make install
+WORKDIR $HOME/src/
+RUN git clone https://github.com/Ensembl/ensembl-xs.git
+WORKDIR $HOME/src/ensemlb-xs
+RUN chmod -R 777 $HOME/src/ensemlb-xs
+RUN sudo perl Makefile.PL
+RUN sudo make
+RUN sudo make test
+RUN sudo make install
 
 WORKDIR $HOME/src/ensembl-vep
-#RUN git pull
-#RUN perl INSTALL.pl -a c -s homo_sapiens -y GRCh38 -l --NO_TEST
-#RUN perl convert_cache.pl -species all -version all
+RUN git pull
