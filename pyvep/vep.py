@@ -12,22 +12,11 @@ vep_refdir = config('vep_refdir')
 pyvep_results = config('pyvep_results')
 
 
-def download(species, ref):
-    cmd = 'sudo perl INSTALL.pl -a ac -s {} -y {} -l --NO_TEST'.format(species, ref)
-    process = Popen(cmd, shell=True, stdout=PIPE, close_fds=True, cwd=vep_homedir)
-    output, error = process.communicate()
-    return None
-
-
-def snv_to_json():
-    return None
-
-
 def run(species, ref, file):
     # Local cache version
     res_file = pyvep_results + os.path.basename(file)
     bash_command = 'vep --gencode_basic --species {} -i {} ' \
-                   ' --gencode_basic --coding_only --pick --filter "SYMBOL"' \
+                   ' --coding_only --pick --filter "SYMBOL"' \
                    ' --json --symbol --canonical --cache --offline' \
                    ' --fork 4 --no_stats --input_file {}' \
                    ' --output_file {}.txt'.format(species, ref, file, res_file)
@@ -42,26 +31,26 @@ def run_dev(species, ref, file):
     # Ensembl db version
     res_file = pyvep_results + os.path.basename(file)
     bash_command = 'vep --gencode_basic --species {} -i {} ' \
-                   ' --gencode_basic --coding_only --pick --filter "SYMBOL"' \
+                   ' --coding_only --pick --filter "SYMBOL"' \
                    ' --json --symbol --canonical --database --input_file {}' \
                    ' --output_file {}.txt'.format(species, ref, file, res_file)
 
     process = Popen(bash_command.split(), stdout=PIPE, cwd=vep_homedir)
     output, error = process.communicate()
     print(str(output, 'utf-8'))
+    parse_json(res_file)
     return res_file
 
 
-def parse_json():
-    json = open('variant_effect_output.txt.json', 'r').readlines()
+def parse_json(res_file):
+    json = open(res_file, 'r').readlines()
     for line in json:
         json_line = loads(line)
-        print(json_line)
     return None
 
 
 def main():
-    parse_json()
+    # parse_json()
     return None
 
 

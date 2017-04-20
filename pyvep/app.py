@@ -1,7 +1,7 @@
 import glob
 import os
 
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, flash, render_template, request, redirect, url_for, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
@@ -15,7 +15,6 @@ app.config['ALLOWED_EXTENSIONS'] = {'vcf', 'txt'}
 
 CORS(app)
 init_url = config('init_url')
-api_url = config('api_url')
 pyvep_results = config('pyvep_results')
 
 
@@ -23,8 +22,23 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('/Users/maximkuleshov/PycharmProjects' + app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file', filename=filename))
+        return None
     return render_template('index.html')
 
 
@@ -59,10 +73,6 @@ def run_vep_dev():
     res_file = os.path.basename(run_dev('homo_sapiens', 'GRCh38', file))
     return send_from_directory(pyvep_results, '{}.txt'.format(res_file))
 
-
-@app.route(api_url, methods=['POST'])
-def api():
-    return None
 
 if __name__ == '__main__':
     app.run()
